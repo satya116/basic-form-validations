@@ -18,6 +18,8 @@ const errStyle = {
 
 const FormValidation = () => {
   const [details, setDetails] = useState(initialState);
+  const [nameError, setNameError] =useState('')
+  const [emailError, setEmailError] =useState('')
 
   const handleChange = (e) => {
     console.log(e.target.name, e.target.value);
@@ -27,18 +29,31 @@ const FormValidation = () => {
   const handleSubmit = () => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
-    if(!details.name || !details.email) {
-      alert('Please provide name and email')
-      return
-    } else if(!regex.test(details.email)) {
-      alert('Invalid email')
+    if(!details.name && !details.email) {
+      setNameError('Please provide name');
+      setEmailError("Please provide email id")
       return
     }
 
+    if(!details.name) {
+      setNameError('Please provide name')
+      return
+    }
+
+    if(!details.email) {
+      setEmailError("Please provide email id")
+      return
+    } else if (!regex.test(details.email)) {
+      setEmailError('Invalid Email address')
+      return
+    }
+
+
+
     alert("Details send Successfully");
-    setDetails(initialState)
-
-
+    setNameError('');
+    setEmailError('')
+    setDetails(initialState);
   };
 
   return (
@@ -65,7 +80,7 @@ const FormValidation = () => {
             placeholder='Enter your name'
             name="name"
           />
-          <Typography style={errStyle}> {} </Typography>
+          <Typography style={errStyle}> {nameError} </Typography>
 
 
           <input
@@ -76,7 +91,7 @@ const FormValidation = () => {
             placeholder='Enter your email'
             name="email"
           />
-          <Typography style={errStyle}> { } </Typography>
+          <Typography style={errStyle}> { emailError } </Typography>
 
 
           <input
